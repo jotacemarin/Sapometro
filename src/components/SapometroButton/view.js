@@ -20,7 +20,7 @@ export const SapometroScreen = ({translateX, setButtonWidth, height = 16}) => {
     const {
       layout: {width},
     } = nativeEvent;
-    const normalWidth = width / 3;
+    const normalWidth = width / 7;
     setButtonWidth(normalWidth);
   };
 
@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
     width: '100%',
     padding: 10,
     paddingTop: 8,
+    backgroundColor: 'rgba(0, 0, 0, .4)',
   },
   button: {
     height: '100%',

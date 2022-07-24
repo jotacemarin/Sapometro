@@ -8,14 +8,15 @@ import Animated, {
   useSharedValue,
 } from 'react-native-reanimated';
 import SapometroButton from '../../components/SapometroButton';
-import SapometroGraph from '../../components/SapometroGraph';
+import SapometroCamera from '../../components/SapometroCamera';
 import SapometroEmoji from '../../components/SapometroEmoji';
 
-const isProd = false;
+const isProd = true;
 
 const graphicsHeight = 84;
 const multiplier = 0.01;
 const max = 1;
+const limitWarning = 0.6;
 
 export const calculatePercent = (buttonWidth, panTranslateX) => {
   const rawPercent = (panTranslateX * 100) / buttonWidth;
@@ -48,11 +49,11 @@ export const SapometroScreen = () => {
   });
 
   const renderGraphics = () => {
-    if (percent === max) {
-      return <SapometroEmoji height={graphicsHeight} />;
+    if (percent >= limitWarning) {
+      return <SapometroEmoji height={graphicsHeight} percent={percent} />;
     }
 
-    return <SapometroGraph height={graphicsHeight} percent={percent} />;
+    return <View style={styles.emptySpace} />;
   };
 
   return (
@@ -60,8 +61,8 @@ export const SapometroScreen = () => {
       <View style={styles.display}>
         {renderGraphics()}
 
+        <SapometroCamera height={graphicsHeight} />
         <Animated.View style={[styles.translateX, animatedTranslateX]} />
-
         <SapometroButton
           height={16}
           setButtonWidth={setButtonWidth}
@@ -79,10 +80,13 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  emptySpace: {
+    height: `${graphicsHeight}%`,
+  },
   translateX: {
     height: 2,
     width: 60,
-    backgroundColor: isProd ? 'white' : 'red',
+    backgroundColor: isProd ? 'transparent' : 'red',
   },
 });
 
